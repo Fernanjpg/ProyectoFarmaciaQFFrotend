@@ -1,12 +1,12 @@
 import { Search, Filter, ChevronDown, UserPlus, MoreHorizontal, HelpCircle, Settings } from 'lucide-react';
 
-export default function ProductTable({ products, onAddUserClick }) {
+export default function ProductTable({ products, onAddProductClick }) {
   // Helpers to pick colors based on role/status
-  const getRoleColors = (product) => {
-    switch(product.rol) {
-      case 'Administrador': return 'bg-indigo-50 text-indigo-700';
-      case 'Jefe Logística': return 'bg-blue-50 text-blue-700';
-      case 'Operador': return 'bg-slate-100 text-slate-700';
+  const getProductColors = (product) => {
+    switch(product.productType) {
+      case 'Tipo Producto 01': return 'bg-indigo-50 text-indigo-700';
+      case 'Tipo Producto 02': return 'bg-blue-50 text-blue-700';
+      case 'Tipo Producto 03': return 'bg-slate-100 text-slate-700';
       default: return 'bg-gray-100 text-gray-700';
     }
   };
@@ -15,13 +15,8 @@ export default function ProductTable({ products, onAddUserClick }) {
     switch(estado?.toUpperCase()) {
       case 'ACTIVO': return 'bg-emerald-500 text-[#1a4d3a]';
       case 'INACTIVO': return 'bg-slate-300 text-slate-500';
-      case 'PENDIENTE': return 'bg-amber-500 text-amber-700';
       default: return 'bg-slate-300 text-slate-500';
     }
-  };
-
-  const getInitials = (nombre, apellido) => {
-    return `${nombre?.charAt(0) || ''}${apellido?.charAt(0) || ''}`.toUpperCase() || 'U';
   };
 
   return (
@@ -52,7 +47,7 @@ export default function ProductTable({ products, onAddUserClick }) {
           </div>
 
           <button 
-            onClick={onAddUserClick}
+            onClick={onAddProductClick}
             className="bg-[#1a4d3a] hover:bg-[#143c2d] text-white font-bold py-3.5 px-6 rounded-full shadow-[0_4px_14px_0_rgba(26,77,58,0.3)] transition-all flex items-center gap-2"
           >
             <UserPlus className="w-5 h-5" />
@@ -65,15 +60,15 @@ export default function ProductTable({ products, onAddUserClick }) {
       <div className="bg-white/80 backdrop-blur rounded-[24px] p-2.5 shadow-sm border border-slate-100 flex flex-col lg:flex-row gap-3 justify-between items-center mb-6">
         <div className="relative w-full lg:w-[500px]">
           <Filter className="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
-          <input type="text" placeholder="Filtrar por nombre o cargo..." className="pl-11 pr-4 py-3 bg-white border border-slate-100 shadow-sm rounded-xl w-full text-sm focus:outline-none focus:ring-2 focus:ring-[#1a4d3a]/20 transition-all font-medium placeholder-slate-400" />
+          <input type="text" placeholder="Filtrar por descripción o tipo de producto..." className="pl-11 pr-4 py-3 bg-white border border-slate-100 shadow-sm rounded-xl w-full text-sm focus:outline-none focus:ring-2 focus:ring-[#1a4d3a]/20 transition-all font-medium placeholder-slate-400" />
         </div>
         <div className="flex gap-3 w-full lg:w-auto">
           <div className="relative">
             <select className="appearance-none bg-white border border-slate-100 shadow-sm rounded-xl pl-5 pr-12 py-3 text-sm font-bold text-slate-600 outline-none focus:ring-2 focus:ring-[#1a4d3a]/20 cursor-pointer min-w-[200px]">
-              <option>Todos los Roles</option>
-              <option>Administrador</option>
-              <option>Jefe Logística</option>
-              <option>Operador</option>
+              <option>Todos los Tipo de Productos</option>
+              <option>Tipo Producto 01</option>
+              <option>Tipo Producto 02</option>
+              <option>Tipo Producto 03</option>
             </select>
             <ChevronDown className="w-5 h-5 absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
           </div>
@@ -89,33 +84,21 @@ export default function ProductTable({ products, onAddUserClick }) {
           <table className="w-full text-left text-sm whitespace-nowrap min-w-[800px]">
             <thead className="bg-transparent border-b border-slate-100 text-slate-400">
               <tr>
-                <th className="py-6 px-8 font-bold tracking-wider text-[11px] uppercase z-0">NOMBRE Y CREDENCIALES</th>
-                <th className="py-6 px-8 font-bold tracking-wider text-[11px] uppercase">ROL ASIGNADO</th>
-                <th className="py-6 px-8 font-bold tracking-wider text-[11px] uppercase">CORREO CORPORATIVO</th>
+                <th className="py-6 px-8 font-bold tracking-wider text-[11px] uppercase z-0">DESCRIPCIÓN</th>
+                <th className="py-6 px-8 font-bold tracking-wider text-[11px] uppercase">TIPO DE PRODUCTO</th>
                 <th className="py-6 px-8 font-bold tracking-wider text-[11px] uppercase">ESTADO</th>
                 <th className="py-6 px-8 font-bold tracking-wider text-[11px] uppercase text-right">ACCIONES</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-50">
               {products.map(product => (
-                <tr key={product.id} className="hover:bg-slate-50/50 transition-colors group">
+                <tr key={product.idproduct} className="hover:bg-slate-50/50 transition-colors group">
+                  <td className="py-5 px-8 text-slate-500 font-medium">{product.descripcion}</td>
                   <td className="py-5 px-8">
-                    <div className="flex items-center gap-4">
-                      <div className="w-11 h-11 rounded-full flex items-center justify-center font-bold text-[13px] bg-slate-100 text-slate-600 shadow-inner border border-white">
-                        {getInitials(product.nombre, product.apellido)}
-                      </div>
-                      <div>
-                        <p className="font-bold text-slate-800 text-[15px]">{product.nombre} {product.apellido}</p>
-                        <p className="text-[11px] font-semibold text-slate-400 mt-0.5">ID-{product.sucursal ? product.sucursal.substring(0, 2).toUpperCase() : 'QF'}-{product.id.toString().padStart(4, '0')}</p>
-                      </div>
-                    </div>
-                  </td>
-                  <td className="py-5 px-8">
-                    <span className={`px-3 py-1.5 rounded-lg text-xs font-bold inline-block border border-black/5 ${getRoleColors(product)} uppercase tracking-wider`}>
-                      {product.rol}
+                    <span className={`px-3 py-1.5 rounded-lg text-xs font-bold inline-block border border-black/5 ${getProductColors(product)} uppercase tracking-wider`}>
+                      {product.productType}
                     </span>
                   </td>
-                  <td className="py-5 px-8 text-slate-500 font-medium">{product.correo}</td>
                   <td className="py-5 px-8">
                     <div className="flex items-center gap-2">
                       <div className={`w-2 h-2 rounded-full ${getStatusColor(product.estado).split(' ')[0]}`}></div>
