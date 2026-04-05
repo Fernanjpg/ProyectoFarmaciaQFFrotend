@@ -2,20 +2,14 @@ import { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
 import Layout from './Layout';
 import ProductTypeTable from './ProductTypeTable';
-// import UserRegistrationForm from './UserRegistrationForm';
+import ProductTypeRegistrationForm from './ProductTypeRegistrationForm';
 
 export default function ProductTypeManagementPage() {
-  const [users, setUsers] = useState([]);
+  const [productTypes, setProductTypes] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [formData, setFormData] = useState({
-    nombre: '',
-    apellido: '',
-    username: '',
-    password: '',
-    rol: '',
-    correo: '',
-    estado: 'ACTIVO',
-    sucursal: ''
+    descripcion: '',
+    estado: ''
   });
 
   // Fetch Logic (Spring Boot Ready)
@@ -30,26 +24,26 @@ export default function ProductTypeManagementPage() {
 
     // Using mock data matching the requested schema
     const mockData = [
-      { id: 1, nombre: 'Lucía', apellido: 'Contreras', username: 'lcontreras', password: '123', rol: 'Jefe Logística', correo: 'l.contreras@corpqf.com.mx', estado: 'ACTIVO', sucursal: 'Sede Central - CDMX' },
-      { id: 2, nombre: 'Javier', apellido: 'Paredes', username: 'jparedes', password: '123', rol: 'Operador', correo: 'j.paredes@corpqf.com.mx', estado: 'INACTIVO', sucursal: 'Hub Logístico - GDL' },
+      { idproductType: 1, descripcion: 'TIPO PRODUCTO 01', estado: 'ACTIVO' },
+      { idproductType: 2, descripcion: 'TIPO PRODUCTO 02', estado: 'INACTIVO' },
     ];
-    setUsers(mockData);
+    setProductTypes(mockData);
   }, []);
 
   const handleRegisterUser = (e) => {
     e.preventDefault();
     // Simulate POST request
-    const newUser = {
+    const newProductType = {
       ...formData,
-      id: users.length > 0 ? Math.max(...users.map(u => u.id)) + 1 : 1,
+      idproductType: productTypes.length > 0 ? Math.max(...productTypes.map(u => u.idproductType)) + 1 : 1,
       // Attempt to split full name to separate field just for mock table
-      nombre: formData.nombre?.split(' ')[0] || formData.nombre,
-      apellido: formData.nombre?.split(' ').slice(1).join(' ') || '',
+      descripcion: formData.descripcion,
+      estado: formData.estado
     };
     
-    setUsers([...users, newUser]);
+    setProductTypes([...productTypes, newProductType]);
     setIsModalOpen(false); // Close after submit
-    setFormData({ nombre: '', apellido: '', username: '', password: '', rol: '', correo: '', estado: 'ACTIVO', sucursal: '' });
+    setFormData({ descripcion: '', estado: '' });
   };
 
   return (
@@ -58,8 +52,8 @@ export default function ProductTypeManagementPage() {
         
         {/* Table Component */}
         <ProductTypeTable
-          productTypes={users}
-          onAddUserClick={() => setIsModalOpen(true)} 
+          productTypes={productTypes}
+          onAddProductTypeClick={() => setIsModalOpen(true)} 
         />
 
         {/* Modal Overlay / Form Container */}
@@ -78,11 +72,11 @@ export default function ProductTypeManagementPage() {
                 <X className="w-5 h-5" />
               </button>
               
-              {/* <UserRegistrationForm 
+              <ProductTypeRegistrationForm 
                 formData={formData} 
                 setFormData={setFormData}
                 onSubmit={handleRegisterUser}
-              /> */}
+              />
             </div>
           </div>
         )}

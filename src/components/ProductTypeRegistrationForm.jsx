@@ -1,6 +1,6 @@
 import { ShieldCheck, ChevronDown } from 'lucide-react';
 
-export default function RoleRegistrationForm({ formData, setFormData, onSubmit }) {
+export default function ProductTypeRegistrationForm({ formData, setFormData, onSubmit }) {
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -21,8 +21,8 @@ export default function RoleRegistrationForm({ formData, setFormData, onSubmit }
 
       {/* Form - Right Side */}
       <div className="md:w-2/3 flex flex-col justify-center">
-        <h2 className="text-2xl font-bold text-slate-800 mb-1 tracking-tight">Registro de Rol</h2>
-        <p className="text-slate-500 text-sm font-medium mb-8">Gestione el alta confidencial de un nuevo operador logístico o funcionario administrativo.</p>
+        <h2 className="text-2xl font-bold text-slate-800 mb-1 tracking-tight">Registro de Tipo de Producto</h2>
+        <p className="text-slate-500 text-sm font-medium mb-8">Gestione el alta confidencial de un nuevo tipo de producto.</p>
         
         <form onSubmit={onSubmit} className="space-y-6">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -35,7 +35,7 @@ export default function RoleRegistrationForm({ formData, setFormData, onSubmit }
                 name="descripcion" 
                 value={formData.descripcion || ''} 
                 onChange={handleChange}
-                placeholder="Ej. Administrador"
+                placeholder="Ej. Insumo Farmacéutico"
                 className="w-full bg-slate-50 border border-transparent focus:bg-white focus:border-[#1a4d3a]/20 rounded-2xl px-5 py-3.5 text-sm font-medium text-slate-800 outline-none transition-all placeholder-slate-400"
                 required
               />
@@ -68,7 +68,7 @@ export default function RoleRegistrationForm({ formData, setFormData, onSubmit }
               type="submit"
               className="bg-[#1a4d3a] hover:bg-[#143c2d] text-white font-bold py-3.5 px-8 rounded-full shadow-[0_4px_14px_0_rgba(26,77,58,0.3)] transition-all flex items-center gap-2"
             >
-              Registrar Rol en Sistema
+              Registrar Tipo de Producto en Sistema
             </button>
           </div>
         </form>
