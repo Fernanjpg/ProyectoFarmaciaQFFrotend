@@ -1,12 +1,13 @@
-import { Box, Package, Activity, Bell, Users, Plus, User } from 'lucide-react';
+import { Box, Package, Users, User, UserKey } from 'lucide-react';
+import { useNavigate, useLocation } from 'react-router-dom';
 
-export default function Sidebar({ activeItem = 'Usuarios' }) {
+export default function Sidebar() {
+  const navigate = useNavigate();
   const navLinks = [
-    { name: 'Inventario', icon: Box },
-    { name: 'Almacenes', icon: Package },
-    { name: 'Movimientos', icon: Activity },
-    { name: 'Alertas', icon: Bell },
-    { name: 'Usuarios', icon: Users },
+    { name: 'Usuarios', icon: Users, link: '/gestion-usuarios' },
+    { name: 'Roles', icon: UserKey, link: '/gestion-roles' },
+    { name: 'Productos', icon: Box, link: '/gestion-productos' },
+    { name: 'Tipo Productos', icon: Package, link: '/gestion-tipo-productos' }
   ];
 
   return (
@@ -15,7 +16,7 @@ export default function Sidebar({ activeItem = 'Usuarios' }) {
       {/* Brand Section */}
       <div className="p-8">
         <h2 className="font-bold text-2xl tracking-tight text-[#1a4d3a] leading-tight">
-          Clinical Architect
+          Corporación QF
         </h2>
         <p className="text-[10px] tracking-widest font-semibold text-slate-500 uppercase mt-1">
           Logística Farmacéutica
@@ -25,11 +26,13 @@ export default function Sidebar({ activeItem = 'Usuarios' }) {
       {/* Navigation */}
       <nav className="flex-1 px-4 py-4 space-y-2">
         {navLinks.map((link) => {
-          const isSelected = activeItem === link.name;
+          const location = useLocation();
+          const isSelected = location.pathname === link.link;
           const Icon = link.icon;
           return (
             <button
               key={link.name}
+              onClick={() => navigate(link.link)}
               className={`w-full flex items-center gap-4 px-6 py-4 rounded-full transition-all font-semibold text-sm ${
                 isSelected 
                   ? 'bg-white text-[#1a4d3a] shadow-sm ring-1 ring-slate-200/50' 
@@ -45,10 +48,10 @@ export default function Sidebar({ activeItem = 'Usuarios' }) {
 
       {/* Bottom Section */}
       <div className="p-6 space-y-4">
-        <button className="w-full bg-[#1a4d3a] hover:bg-[#143c2d] text-white font-semibold py-4 rounded-full flex items-center justify-center gap-2 transition-colors shadow-lg shadow-[#1a4d3a]/20">
+        {/* <button className="w-full bg-[#1a4d3a] hover:bg-[#143c2d] text-white font-semibold py-4 rounded-full flex items-center justify-center gap-2 transition-colors shadow-lg shadow-[#1a4d3a]/20">
           <Plus className="w-5 h-5" />
           Nueva Operación
-        </button>
+        </button> */}
         
         <div className="bg-white/60 p-4 rounded-full flex items-center gap-3 border border-slate-200/50">
           <div className="w-10 h-10 bg-[#1a4d3a] text-white rounded-full flex items-center justify-center shadow-inner">
