@@ -2,20 +2,14 @@ import { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
 import Layout from './Layout';
 import RoleTable from './RoleTable';
-// import UserRegistrationForm from './UserRegistrationForm';
+import RoleRegistrationForm from './RoleRegistrationForm';
 
 export default function RoleManagementPage() {
-  const [users, setUsers] = useState([]);
+  const [roles, setRoles] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [formData, setFormData] = useState({
-    nombre: '',
-    apellido: '',
-    username: '',
-    password: '',
-    rol: '',
-    correo: '',
-    estado: 'ACTIVO',
-    sucursal: ''
+    descripcion: '',
+    estado: ''
   });
 
   // Fetch Logic (Spring Boot Ready)
@@ -30,26 +24,27 @@ export default function RoleManagementPage() {
 
     // Using mock data matching the requested schema
     const mockData = [
-      { id: 1, nombre: 'Lucía', apellido: 'Contreras', username: 'lcontreras', password: '123', rol: 'Jefe Logística', correo: 'l.contreras@corpqf.com.mx', estado: 'ACTIVO', sucursal: 'Sede Central - CDMX' },
-      { id: 2, nombre: 'Javier', apellido: 'Paredes', username: 'jparedes', password: '123', rol: 'Operador', correo: 'j.paredes@corpqf.com.mx', estado: 'INACTIVO', sucursal: 'Hub Logístico - GDL' },
+      { idrol: 1, descripcion: 'PRUEBA 01', estado: 'ACTIVO' },
+      { idrol: 2, descripcion: 'PRUEBA 02', estado: 'INACTIVO' },
     ];
-    setUsers(mockData);
+    setRoles(mockData);
   }, []);
 
-  const handleRegisterUser = (e) => {
+  const handleRegisterRole = (e) => {
     e.preventDefault();
     // Simulate POST request
-    const newUser = {
+    const newRol = {
       ...formData,
-      id: users.length > 0 ? Math.max(...users.map(u => u.id)) + 1 : 1,
+      idrol: roles.length > 0 ? Math.max(...roles.map(u => u.idrol)) + 1 : 1,
       // Attempt to split full name to separate field just for mock table
-      nombre: formData.nombre?.split(' ')[0] || formData.nombre,
-      apellido: formData.nombre?.split(' ').slice(1).join(' ') || '',
+      descripcion: formData.descripcion,
+      estado: formData.estado
     };
     
-    setUsers([...users, newUser]);
+    console.log(newRol);
+    setRoles([...roles, newRol]);
     setIsModalOpen(false); // Close after submit
-    setFormData({ nombre: '', apellido: '', username: '', password: '', rol: '', correo: '', estado: 'ACTIVO', sucursal: '' });
+    setFormData({ descripcion: '', estado: '' });
   };
 
   return (
@@ -58,8 +53,8 @@ export default function RoleManagementPage() {
         
         {/* Table Component */}
         <RoleTable
-          roles={users}
-          onAddUserClick={() => setIsModalOpen(true)} 
+          roles={roles}
+          onAddRoleClick={() => setIsModalOpen(true)} 
         />
 
         {/* Modal Overlay / Form Container */}
@@ -78,11 +73,11 @@ export default function RoleManagementPage() {
                 <X className="w-5 h-5" />
               </button>
               
-              {/* <UserRegistrationForm 
+              <RoleRegistrationForm
                 formData={formData} 
                 setFormData={setFormData}
-                onSubmit={handleRegisterUser}
-              /> */}
+                onSubmit={handleRegisterRole}
+              />
             </div>
           </div>
         )}

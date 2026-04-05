@@ -21,7 +21,7 @@ export default function UserRegistrationForm({ formData, setFormData, onSubmit }
 
       {/* Form - Right Side */}
       <div className="md:w-2/3 flex flex-col justify-center">
-        <h2 className="text-2xl font-bold text-slate-800 mb-1 tracking-tight">Registro de Perfiles</h2>
+        <h2 className="text-2xl font-bold text-slate-800 mb-1 tracking-tight">Registro de Usuario</h2>
         <p className="text-slate-500 text-sm font-medium mb-8">Gestione el alta confidencial de un nuevo operador logístico o funcionario administrativo.</p>
         
         <form onSubmit={onSubmit} className="space-y-6">
