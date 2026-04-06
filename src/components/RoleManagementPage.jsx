@@ -8,73 +8,74 @@ export default function RoleManagementPage() {
   const [roles, setRoles] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [formData, setFormData] = useState({
-    descripcion: '',
-    estado: ''
+    nombre: '',
+    estado: 'ACTIVO'
   });
 
-  // Fetch Logic (Spring Boot Ready)
-  useEffect(() => {
-    // Stub to fetch data later
-    /*
-    fetch('http://localhost:8080/api/usuarios')
-      .then(res => res.json())
-      .then(data => setUsers(data))
-      .catch(err => console.error("API error:", err));
-    */
+  const fetchRoles = async () => {
+    try {
+      const res = await fetch('http://localhost:8081/api/roles/Listar');
+      if (res.ok) {
+        setRoles(await res.json());
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
 
-    // Using mock data matching the requested schema
-    const mockData = [
-      { idrol: 1, descripcion: 'PRUEBA 01', estado: 'ACTIVO' },
-      { idrol: 2, descripcion: 'PRUEBA 02', estado: 'INACTIVO' },
-    ];
-    setRoles(mockData);
+  useEffect(() => {
+    fetchRoles();
   }, []);
 
-  const handleRegisterRole = (e) => {
+  const handleRegisterRole = async (e) => {
     e.preventDefault();
-    // Simulate POST request
-    const newRol = {
-      ...formData,
-      idrol: roles.length > 0 ? Math.max(...roles.map(u => u.idrol)) + 1 : 1,
-      // Attempt to split full name to separate field just for mock table
-      descripcion: formData.descripcion,
-      estado: formData.estado
-    };
-    
-    console.log(newRol);
-    setRoles([...roles, newRol]);
-    setIsModalOpen(false); // Close after submit
-    setFormData({ descripcion: '', estado: '' });
+    try {
+      const res = await fetch('http://localhost:8081/api/roles/Guardar', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          nombre: formData.nombre,
+          estado: formData.estado
+        })
+      });
+      if (res.ok) {
+        await fetchRoles();
+        setIsModalOpen(false);
+        setFormData({ nombre: '', estado: 'ACTIVO' });
+      }
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   return (
     <Layout>
       <div className="p-8 lg:p-12 space-y-10">
-        
+
         {/* Table Component */}
         <RoleTable
           roles={roles}
-          onAddRoleClick={() => setIsModalOpen(true)} 
+          onAddRoleClick={() => setIsModalOpen(true)}
         />
 
         {/* Modal Overlay / Form Container */}
         {isModalOpen && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6">
-            <div 
+            <div
               className="absolute inset-0 bg-[#0f2e22]/50 backdrop-blur-sm transition-opacity"
               onClick={() => setIsModalOpen(false)}
             ></div>
-            
+
             <div className="relative z-10 w-full max-w-5xl animate-in zoom-in-95 duration-200">
-              <button 
+              <button
                 onClick={() => setIsModalOpen(false)}
                 className="absolute -top-4 -right-4 w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-lg text-slate-400 hover:text-slate-800 transition-colors z-20"
               >
                 <X className="w-5 h-5" />
               </button>
-              
+
               <RoleRegistrationForm
-                formData={formData} 
+                formData={formData}
                 setFormData={setFormData}
                 onSubmit={handleRegisterRole}
               />

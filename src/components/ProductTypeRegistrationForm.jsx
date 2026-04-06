@@ -32,8 +32,8 @@ export default function ProductTypeRegistrationForm({ formData, setFormData, onS
               <label className="block text-[11px] font-bold text-slate-500 mb-2.5 uppercase tracking-widest">DESCRIPCIÓN</label>
               <input 
                 type="text" 
-                name="descripcion" 
-                value={formData.descripcion || ''} 
+                name="nombre" 
+                value={formData.nombre || ''} 
                 onChange={handleChange}
                 placeholder="Ej. Insumo Farmacéutico"
                 className="w-full bg-slate-50 border border-transparent focus:bg-white focus:border-[#1a4d3a]/20 rounded-2xl px-5 py-3.5 text-sm font-medium text-slate-800 outline-none transition-all placeholder-slate-400"

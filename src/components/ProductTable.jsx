@@ -1,6 +1,6 @@
-import { Search, Filter, ChevronDown, UserPlus, MoreHorizontal, HelpCircle, Settings } from 'lucide-react';
+import { Search, Filter, ChevronDown, UserPlus, MoreHorizontal, HelpCircle, Settings, Trash } from 'lucide-react';
 
-export default function ProductTable({ products, onAddProductClick }) {
+export default function ProductTable({ products, onAddProductClick, onSearch, onDeleteProduct }) {
   // Helpers to pick colors based on role/status
   const getProductColors = (product) => {
     switch(product.productType) {
@@ -39,7 +39,15 @@ export default function ProductTable({ products, onAddProductClick }) {
           <div className="flex items-center gap-4 text-slate-400 bg-white px-4 py-2 rounded-full shadow-sm">
             <div className="relative">
               <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-300" />
-              <input type="text" placeholder="Buscar productos..." className="pl-9 pr-4 py-1.5 bg-transparent border-none text-sm focus:outline-none focus:ring-0 w-48" />
+              <input type="text" 
+                placeholder="Buscar productos..." 
+                className="pl-9 pr-4 py-1.5 bg-transparent border-none text-sm focus:outline-none focus:ring-0 w-48" 
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && onSearch) {
+                    onSearch(e.target.value);
+                  }
+                }}
+              />
             </div>
             <button className="p-1.5 hover:text-slate-600 transition-colors"><HelpCircle className="w-5 h-5" /></button>
             <button className="p-1.5 hover:text-slate-600 transition-colors"><Settings className="w-5 h-5" /></button>
@@ -84,20 +92,24 @@ export default function ProductTable({ products, onAddProductClick }) {
           <table className="w-full text-left text-sm whitespace-nowrap min-w-[800px]">
             <thead className="bg-transparent border-b border-slate-100 text-slate-400">
               <tr>
-                <th className="py-6 px-8 font-bold tracking-wider text-[11px] uppercase z-0">DESCRIPCIÓN</th>
+                <th className="py-6 px-8 font-bold tracking-wider text-[11px] uppercase z-0">NOMBRE</th>
                 <th className="py-6 px-8 font-bold tracking-wider text-[11px] uppercase">TIPO DE PRODUCTO</th>
+                <th className="py-6 px-8 font-bold tracking-wider text-[11px] uppercase">STOCK</th>
                 <th className="py-6 px-8 font-bold tracking-wider text-[11px] uppercase">ESTADO</th>
                 <th className="py-6 px-8 font-bold tracking-wider text-[11px] uppercase text-right">ACCIONES</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-50">
-              {products.map(product => (
-                <tr key={product.idproduct} className="hover:bg-slate-50/50 transition-colors group">
-                  <td className="py-5 px-8 text-slate-500 font-medium">{product.descripcion}</td>
+              {products.map((product, idx) => (
+                <tr key={product.id || idx} className="hover:bg-slate-50/50 transition-colors group">
+                  <td className="py-5 px-8 text-slate-500 font-medium">{product.nombre}</td>
                   <td className="py-5 px-8">
-                    <span className={`px-3 py-1.5 rounded-lg text-xs font-bold inline-block border border-black/5 ${getProductColors(product)} uppercase tracking-wider`}>
-                      {product.productType}
+                    <span className={`px-3 py-1.5 rounded-lg text-xs font-bold inline-block border border-black/5 ${getProductColors({productType: product.tipo?.nombre})} uppercase tracking-wider`}>
+                      {product.tipo?.nombre || 'SIN TIPO'}
                     </span>
+                  </td>
+                  <td className="py-5 px-8 text-slate-500 font-medium">
+                    {product.stock}
                   </td>
                   <td className="py-5 px-8">
                     <div className="flex items-center gap-2">
@@ -110,7 +122,7 @@ export default function ProductTable({ products, onAddProductClick }) {
                   <td className="py-5 px-8 text-right">
                     <div className="flex justify-end gap-2 text-slate-400">
                       <button className="p-2 hover:text-[#1a4d3a] hover:bg-[#e6f5ef] rounded-[10px] transition-all"><UserPlus className="w-5 h-5" /></button>
-                      <button className="p-2 hover:text-slate-700 hover:bg-slate-100 rounded-[10px] transition-all"><MoreHorizontal className="w-5 h-5" /></button>
+                      <button onClick={() => onDeleteProduct && onDeleteProduct(product.id)} className="p-2 hover:text-red-600 hover:bg-red-50 rounded-[10px] transition-all"><Trash className="w-5 h-5" /></button>
                     </div>
                   </td>
                 </tr>

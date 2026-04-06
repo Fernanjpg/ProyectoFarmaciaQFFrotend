@@ -8,44 +8,81 @@ export default function ProductManagementPage() {
   const [products, setProducts] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [formData, setFormData] = useState({
-    descripcion: '',
-    productType: '',
-    estado: ''
+    nombre: '',
+    stock: '',
+    proveedor_id: '',
+    Tproductos_id: ''
   });
 
-  // Fetch Logic (Spring Boot Ready)
-  useEffect(() => {
-    // Stub to fetch data later
-    /*
-    fetch('http://localhost:8080/api/usuarios')
-      .then(res => res.json())
-      .then(data => setUsers(data))
-      .catch(err => console.error("API error:", err));
-    */
+  const fetchProducts = async () => {
+    try {
+      const res = await fetch('http://localhost:8081/api/productos/Listar');
+      if (res.ok) {
+        const data = await res.json();
+        setProducts(data);
+      }
+    } catch (err) {
+      console.error("API error:", err);
+    }
+  };
 
-    // Using mock data matching the requested schema
-    const mockData = [
-      { idproduct: 1, descripcion: 'PRODUCTO 01', productType: 'Tipo Producto 01', estado: 'ACTIVO'},
-      { idproduct: 2, descripcion: 'PRODUCTO 02', productType: 'Tipo Producto 02', estado: 'ACTIVO'},
-    ];
-    setProducts(mockData);
+  const handleSearch = async (name) => {
+    if (!name.trim()) {
+      fetchProducts();
+      return;
+    }
+    try {
+      const res = await fetch(`http://localhost:8081/api/productos/Buscar/${encodeURIComponent(name)}`);
+      if (res.ok) {
+        const data = await res.json();
+        setProducts(data);
+      }
+    } catch (err) {
+      console.error("API Search error:", err);
+    }
+  };
+
+  useEffect(() => {
+    fetchProducts();
   }, []);
 
-  const handleRegisterProduct = (e) => {
+  const handleRegisterProduct = async (e) => {
     e.preventDefault();
-    // Simulate POST request
-    const newUser = {
-      ...formData,
-      idproduct: products.length > 0 ? Math.max(...products.map(u => u.idproduct)) + 1 : 1,
-      // Attempt to split full name to separate field just for mock table
-      descripcion: formData.descripcion,
-      productType: formData.productType,
-      estado: formData.estado
-    };
-    
-    setProducts([...products, newUser]);
-    setIsModalOpen(false); // Close after submit
-    setFormData({ descripcion: '', productType: '', estado: '' });
+    try {
+      const res = await fetch('http://localhost:8081/api/productos/Guardar', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          nombre: formData.nombre,
+          stock: parseInt(formData.stock, 10),
+          proveedor_id: parseInt(formData.proveedor_id, 10),
+          Tproductos_id: parseInt(formData.Tproductos_id, 10)
+        })
+      });
+      if (res.ok) {
+        await fetchProducts(); // Refresh list
+        setIsModalOpen(false); // Close after submit
+        setFormData({ nombre: '', stock: '', proveedor_id: '', Tproductos_id: '' });
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const handleDeleteProduct = async (id) => {
+    if (!window.confirm("¿Está seguro de que desea eliminar este producto?")) return;
+    try {
+      const res = await fetch(`http://localhost:8081/api/productos/Eliminar/${id}`, {
+        method: 'DELETE'
+      });
+      if (res.ok) {
+        await fetchProducts();
+      }
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (
@@ -55,7 +92,9 @@ export default function ProductManagementPage() {
         {/* Table Component */}
         <ProductTable
           products={products}
+          onSearch={handleSearch}
           onAddProductClick={() => setIsModalOpen(true)} 
+          onDeleteProduct={handleDeleteProduct}
         />
 
         {/* Modal Overlay / Form Container */}

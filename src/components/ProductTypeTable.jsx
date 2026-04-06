@@ -66,9 +66,9 @@ export default function ProductTypeTable({ productTypes, onAddProductTypeClick }
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-50">
-              {productTypes.map(productType => (
-                <tr key={productType.idproductType} className="hover:bg-slate-50/50 transition-colors group">
-                  <td className="py-5 px-8 text-slate-500 font-medium">{productType.descripcion}</td>
+              {productTypes.map((productType, idx) => (
+                <tr key={productType.idTProducto || idx} className="hover:bg-slate-50/50 transition-colors group">
+                  <td className="py-5 px-8 text-slate-500 font-medium">{productType.nombre || productType.descripcion}</td>
                   <td className="py-5 px-8">
                     <div className="flex items-center gap-2">
                       <div className={`w-2 h-2 rounded-full ${getStatusColor(productType.estado).split(' ')[0]}`}></div>

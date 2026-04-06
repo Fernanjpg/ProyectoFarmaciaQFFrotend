@@ -1,9 +1,9 @@
-import { Search, Filter, ChevronDown, UserPlus, MoreHorizontal, HelpCircle, Settings } from 'lucide-react';
+import { Search, Filter, ChevronDown, UserPlus, MoreHorizontal, HelpCircle, Settings, Trash } from 'lucide-react';
 
-export default function UserTable({ users, onAddUserClick }) {
+export default function UserTable({ users, onAddUserClick, onDeleteUser }) {
   // Helpers to pick colors based on role/status
   const getRoleColors = (rol) => {
-    switch(rol) {
+    switch (rol) {
       case 'Administrador': return 'bg-indigo-50 text-indigo-700';
       case 'Jefe Logística': return 'bg-blue-50 text-blue-700';
       case 'Operador': return 'bg-slate-100 text-slate-700';
@@ -12,7 +12,7 @@ export default function UserTable({ users, onAddUserClick }) {
   };
 
   const getStatusColor = (estado) => {
-    switch(estado?.toUpperCase()) {
+    switch (estado?.toUpperCase()) {
       case 'ACTIVO': return 'bg-emerald-500 text-[#1a4d3a]';
       case 'INACTIVO': return 'bg-slate-300 text-slate-500';
       case 'PENDIENTE': return 'bg-amber-500 text-amber-700';
@@ -26,7 +26,7 @@ export default function UserTable({ users, onAddUserClick }) {
 
   return (
     <div className="w-full">
-      
+
       {/* Top Header Section */}
       <div className="flex justify-between items-center mb-8">
         <div>
@@ -38,7 +38,7 @@ export default function UserTable({ users, onAddUserClick }) {
           <h1 className="text-4xl font-bold text-slate-800 tracking-tight">Gestión de Usuarios</h1>
           <p className="text-slate-500 mt-2 font-medium">Control centralizado de accesos y perfiles operativos para la cadena logística.</p>
         </div>
-        
+
         <div className="flex flex-col items-end gap-6">
           {/* Top nav icons fake bar */}
           <div className="flex items-center gap-4 text-slate-400 bg-white px-4 py-2 rounded-full shadow-sm">
@@ -51,7 +51,7 @@ export default function UserTable({ users, onAddUserClick }) {
             <img src="https://ui-avatars.com/api/?name=Admin+QF&background=1a4d3a&color=fff" alt="Perfil" className="w-8 h-8 rounded-full ml-2 border-2 border-white shadow-sm" />
           </div>
 
-          <button 
+          <button
             onClick={onAddUserClick}
             className="bg-[#1a4d3a] hover:bg-[#143c2d] text-white font-bold py-3.5 px-6 rounded-full shadow-[0_4px_14px_0_rgba(26,77,58,0.3)] transition-all flex items-center gap-2"
           >
@@ -98,7 +98,7 @@ export default function UserTable({ users, onAddUserClick }) {
             </thead>
             <tbody className="divide-y divide-slate-50">
               {users.map(user => (
-                <tr key={user.id} className="hover:bg-slate-50/50 transition-colors group">
+                <tr key={user.idUsuarios} className="hover:bg-slate-50/50 transition-colors group">
                   <td className="py-5 px-8">
                     <div className="flex items-center gap-4">
                       <div className="w-11 h-11 rounded-full flex items-center justify-center font-bold text-[13px] bg-slate-100 text-slate-600 shadow-inner border border-white">
@@ -106,16 +106,18 @@ export default function UserTable({ users, onAddUserClick }) {
                       </div>
                       <div>
                         <p className="font-bold text-slate-800 text-[15px]">{user.nombre} {user.apellido}</p>
-                        <p className="text-[11px] font-semibold text-slate-400 mt-0.5">ID-{user.sucursal ? user.sucursal.substring(0, 2).toUpperCase() : 'QF'}-{user.id.toString().padStart(4, '0')}</p>
+                        <p className="text-[11px] font-semibold text-slate-400 mt-0.5">
+                          ID-{user.sucursal?.toString().substring(0, 2).toUpperCase() || 'QF'}-{user.idUsuarios?.toString().padStart(4, '0') || '0000'}
+                        </p>
                       </div>
                     </div>
                   </td>
                   <td className="py-5 px-8">
-                    <span className={`px-3 py-1.5 rounded-lg text-xs font-bold inline-block border border-black/5 ${getRoleColors(user.rol)} uppercase tracking-wider`}>
-                      {user.rol}
+                    <span className={`px-3 py-1.5 rounded-lg text-xs font-bold inline-block border border-black/5 ${getRoleColors(user.roles?.nombre)} uppercase tracking-wider`}>
+                      {user.roles?.nombre || 'SIN ROL'}
                     </span>
                   </td>
-                  <td className="py-5 px-8 text-slate-500 font-medium">{user.correo}</td>
+                  <td className="py-5 px-8 text-slate-500 font-medium">{user.email}</td>
                   <td className="py-5 px-8">
                     <div className="flex items-center gap-2">
                       <div className={`w-2 h-2 rounded-full ${getStatusColor(user.estado).split(' ')[0]}`}></div>
@@ -127,12 +129,12 @@ export default function UserTable({ users, onAddUserClick }) {
                   <td className="py-5 px-8 text-right">
                     <div className="flex justify-end gap-2 text-slate-400">
                       <button className="p-2 hover:text-[#1a4d3a] hover:bg-[#e6f5ef] rounded-[10px] transition-all"><UserPlus className="w-5 h-5" /></button>
-                      <button className="p-2 hover:text-slate-700 hover:bg-slate-100 rounded-[10px] transition-all"><MoreHorizontal className="w-5 h-5" /></button>
+                      <button onClick={() => onDeleteUser && onDeleteUser(user.idUsuarios)} className="p-2 hover:text-red-600 hover:bg-red-50 rounded-[10px] transition-all"><Trash className="w-5 h-5" /></button>
                     </div>
                   </td>
                 </tr>
               ))}
-              
+
               {users.length === 0 && (
                 <tr>
                   <td colSpan="5" className="py-8 text-center text-slate-500 font-medium">No se encontraron usuarios.</td>
@@ -141,7 +143,7 @@ export default function UserTable({ users, onAddUserClick }) {
             </tbody>
           </table>
         </div>
-        
+
         {/* Pagination Footer */}
         <div className="bg-slate-50/50 border-t border-slate-100 py-4 px-8 flex justify-between items-center text-sm font-medium text-slate-500">
           <p>Mostrando {users.length} usuarios operativos</p>

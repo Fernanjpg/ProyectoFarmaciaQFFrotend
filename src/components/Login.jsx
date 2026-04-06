@@ -18,12 +18,12 @@ export default function Login() {
     setErrorMsg('');
 
     try {
-      const response = await fetch('http://localhost:8080/api/usuarios/login', {
+      const response = await fetch('http://localhost:8081/api/usuarios/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ user: username, password: password })
+        body: JSON.stringify({ username: username, password: password })
       });
 
       if (response.ok) {
@@ -31,7 +31,7 @@ export default function Login() {
         // Save user data in localStorage
         localStorage.setItem('qf_user_session', JSON.stringify(userData));
 
-        // Redirect to management page
+        // Redirect to gestion-productos
         navigate('/gestion-usuarios');
       } else {
         // Attempt to parse any error payload from backend, otherwise use generic message

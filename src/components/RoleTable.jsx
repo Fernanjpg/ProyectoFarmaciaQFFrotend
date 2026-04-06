@@ -68,7 +68,7 @@ export default function RoleTable({ roles, onAddRoleClick }) {
             <tbody className="divide-y divide-slate-50">
               {roles.map(role => (
                 <tr key={role.idrol} className="hover:bg-slate-50/50 transition-colors group">
-                  <td className="py-5 px-8 text-slate-500 font-medium">{role.descripcion}</td>
+                  <td className="py-5 px-8 text-slate-500 font-medium">{role.nombre || role.descripcion}</td>
                   <td className="py-5 px-8">
                     <div className="flex items-center gap-2">
                       <div className={`w-2 h-2 rounded-full ${getStatusColor(role.estado).split(' ')[0]}`}></div>
