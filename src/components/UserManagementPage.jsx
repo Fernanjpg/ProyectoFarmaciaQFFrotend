@@ -43,7 +43,7 @@ export default function UserManagementPage() {
           username: formData.username,
           password: formData.password,
           email: formData.email,
-          roles: { id_roles: parseInt(formData.rol, 10) }
+          rol: { id_roles: parseInt(formData.rol, 10) }
         })
       });
       if (res.ok) {

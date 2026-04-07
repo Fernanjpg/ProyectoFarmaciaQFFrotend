@@ -86,8 +86,8 @@ export default function ProductRegistrationForm({ formData, setFormData, onSubmi
                   required
                 >
                   <option value="" disabled>Seleccione el tipo...</option>
-                  {tipos.map(t => (
-                    <option key={t.idTProducto} value={t.idTProducto}>{t.nombre}</option>
+                  {tipos.map((t, index) => (
+                    <option key={t.idtproductos ?? index} value={t.idtproductos}>{t.nombre}</option>
                   ))}
                 </select>
                 <ChevronDown className="w-5 h-5 absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />

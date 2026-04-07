@@ -57,8 +57,8 @@ export default function ProductManagementPage() {
         body: JSON.stringify({
           nombre: formData.nombre,
           stock: parseInt(formData.stock, 10),
-          proveedor_id: parseInt(formData.proveedor_id, 10),
-          Tproductos_id: parseInt(formData.Tproductos_id, 10)
+          proveedores: { id: parseInt(formData.proveedor_id, 10) },
+          tipoProductos: { idtproductos: parseInt(formData.Tproductos_id, 10) }
         })
       });
       if (res.ok) {
@@ -88,33 +88,33 @@ export default function ProductManagementPage() {
   return (
     <Layout>
       <div className="p-8 lg:p-12 space-y-10">
-        
+
         {/* Table Component */}
         <ProductTable
           products={products}
           onSearch={handleSearch}
-          onAddProductClick={() => setIsModalOpen(true)} 
+          onAddProductClick={() => setIsModalOpen(true)}
           onDeleteProduct={handleDeleteProduct}
         />
 
         {/* Modal Overlay / Form Container */}
         {isModalOpen && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6">
-            <div 
+            <div
               className="absolute inset-0 bg-[#0f2e22]/50 backdrop-blur-sm transition-opacity"
               onClick={() => setIsModalOpen(false)}
             ></div>
-            
+
             <div className="relative z-10 w-full max-w-5xl animate-in zoom-in-95 duration-200">
-              <button 
+              <button
                 onClick={() => setIsModalOpen(false)}
                 className="absolute -top-4 -right-4 w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-lg text-slate-400 hover:text-slate-800 transition-colors z-20"
               >
                 <X className="w-5 h-5" />
               </button>
-              
-              <ProductRegistrationForm 
-                formData={formData} 
+
+              <ProductRegistrationForm
+                formData={formData}
                 setFormData={setFormData}
                 onSubmit={handleRegisterProduct}
               />

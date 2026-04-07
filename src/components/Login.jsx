@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { User, Lock, EyeOff, Eye, ShieldCheck, Truck, Package, ArrowRight, Loader2 } from 'lucide-react';
+import { User, Lock, EyeOff, Eye, ShieldCheck, Truck, Package, ArrowRight, Loader2, Box } from 'lucide-react';
 
 export default function Login() {
   const [role, setRole] = useState('ADMINISTRADOR');
@@ -52,11 +52,14 @@ export default function Login() {
   ];
 
   return (
-    <div className="min-h-screen bg-[radial-gradient(ellipse_at_center,var(--tw-gradient-stops))] from-white to-[#E6F4F0] flex items-center justify-center p-4 sm:p-8 font-sans">
-      <div className="max-w-[1000px] w-full bg-white rounded-[40px] shadow-2xl flex flex-col md:flex-row overflow-hidden min-h-[600px] lg:min-h-[650px]">
+
+    <div className="min-h-screen bg-[radial-gradient(ellipse_at_center,var(--tw-gradient-stops))] from-green to-[#18d39e] flex items-center justify-center p-4 sm:p-8 font-sans">
+
+      <div className="max-w-[1000px] w-full bg-brown rounded-[40px] shadow-2xl flex flex-col md:flex-row overflow-hidden min-h-[600px] lg:min-h-[650px]">
 
         {/* Left Column (Branding Panel) */}
-        <div className="hidden md:flex flex-col justify-between w-[40%] bg-[#2D7A5F] p-10 lg:p-14 relative overflow-hidden">
+        <div className="hidden md:flex flex-col justify-between w-[40%] bg-[rgb(24,126,63)] p-10 lg:p-14 relative overflow-hidden">
+
           {/* Background image overlay */}
           <div
             className="absolute inset-0 opacity-10 mix-blend-overlay bg-cover bg-center pointer-events-none"
@@ -77,7 +80,7 @@ export default function Login() {
           </div>
 
           <div className="relative z-10 mt-auto pt-8">
-            <div className="border-t border-[#499D81]/50 pt-6">
+            <div className="border-t border-[#412d7a]/50 pt-6">
               <p className="text-xs tracking-[0.2em] font-bold text-[#E6F4F0] opacity-90 uppercase">
                 Sistema Veridian v2.0
               </p>
@@ -86,7 +89,7 @@ export default function Login() {
         </div>
 
         {/* Right Column (Form) */}
-        <div className="w-full md:w-[60%] p-8 sm:p-12 lg:p-16 flex flex-col justify-center bg-white relative z-20">
+        <div className="w-full md:w-[60%] p-8 sm:p-12 lg:p-16 flex flex-col justify-center bg- relative z-20">
           <div className="mb-10">
             <h2 className="text-3xl font-bold text-slate-800 mb-2">Bienvenido de nuevo</h2>
             <p className="text-slate-500">Por favor, ingresa tus credenciales para continuar.</p>
@@ -95,29 +98,30 @@ export default function Login() {
           <form onSubmit={handleLogin} className="w-full space-y-6">
 
             {/* Role Selector */}
-            <div className="flex flex-col sm:flex-row gap-3 mb-8">
+            <div className="flex flex-col sm:flex-row gap-1 mb-8">
               {roles.map(r => {
                 const isSelected = role === r.id;
                 const Icon = r.icon;
                 return (
-                  <button
-                    key={r.id}
-                    type="button"
-                    onClick={() => setRole(r.id)}
-                    className={`flex-1 flex flex-col items-center justify-center py-4 px-2 rounded-2xl transition-all duration-200 ${isSelected
-                      ? 'bg-white border-4 border-[#499D81] shadow-md transform scale-105 z-10'
-                      : 'bg-slate-50 border-4 border-transparent text-slate-500 hover:bg-slate-100'
-                      }`}
-                  >
-                    <Icon className={`w-6 h-6 mb-2 ${isSelected ? 'text-[#499D81]' : 'text-slate-400'}`} />
-                    <span className={`text-[10px] md:text-xs font-bold text-center tracking-wide ${isSelected ? 'text-slate-800' : 'text-slate-500'}`}>
-                      {r.label}
-                    </span>
-                  </button>
+                  <>
+                    <button
+                      key={r.id}
+                      type="button"
+                      onClick={() => setRole(r.id)}
+                      className={`flex-1 flex flex-col items-center justify-center py-4 px-2 rounded-2xl transition-all duration-200 ${isSelected
+                        ? 'bg-white border-4 border-[#499D81] shadow-md transform scale-105 z-10'
+                        : 'bg-slate-50 border-4 border-transparent text-slate-500 hover:bg-slate-100'
+                        }`}
+                    >
+                      <Icon className={`w-6 h-6 mb-2 ${isSelected ? 'text-[#499D81]' : 'text-slate-400'}`} />
+                      <span className={`text-[10px] md:text-xs font-bold text-center tracking-wide ${isSelected ? 'text-slate-800' : 'text-slate-500'}`}>
+                        {r.label}
+                      </span>
+                    </button>
+                  </>
                 )
               })}
             </div>
-
             {/* Error Message */}
             {errorMsg && (
               <div className="bg-red-50 text-red-600 p-4 rounded-xl text-sm font-bold text-center">
@@ -183,7 +187,7 @@ export default function Login() {
               className={`w-full mt-6 text-white font-bold py-4 px-6 rounded-full shadow-[0_8px_20px_rgba(73,157,129,0.3)] transition-all duration-300 outline-none flex items-center justify-center group tracking-wide
                 ${isLoading
                   ? 'bg-slate-400 cursor-not-allowed shadow-none'
-                  : 'bg-[#499D81] hover:bg-[#3d856d] hover:shadow-[0_10px_25px_rgba(73,157,129,0.4)] hover:-translate-y-1 focus:ring-4 focus:ring-[#499D81]/50'
+                  : 'bg-[#499D81] hover:bg-[#499D81] hover:shadow-[0_10px_25px_rgba(73,157,129,0.4)] hover:-translate-y-1 focus:ring-4 focus:ring-[#499D81]/50'
                 }`}
             >
               {isLoading ? (
@@ -194,7 +198,7 @@ export default function Login() {
               ) : (
                 <>
                   INICIAR SESIÓN
-                  <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1.5 transition-transform" />
+                  <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1.5 transition-transform bg" />
                 </>
               )}
             </button>

@@ -3,7 +3,7 @@ import { Search, Filter, ChevronDown, UserPlus, MoreHorizontal, HelpCircle, Sett
 export default function ProductTable({ products, onAddProductClick, onSearch, onDeleteProduct }) {
   // Helpers to pick colors based on role/status
   const getProductColors = (product) => {
-    switch(product.productType) {
+    switch (product.productType) {
       case 'Tipo Producto 01': return 'bg-indigo-50 text-indigo-700';
       case 'Tipo Producto 02': return 'bg-blue-50 text-blue-700';
       case 'Tipo Producto 03': return 'bg-slate-100 text-slate-700';
@@ -12,7 +12,7 @@ export default function ProductTable({ products, onAddProductClick, onSearch, on
   };
 
   const getStatusColor = (estado) => {
-    switch(estado?.toUpperCase()) {
+    switch (estado?.toUpperCase()) {
       case 'ACTIVO': return 'bg-emerald-500 text-[#1a4d3a]';
       case 'INACTIVO': return 'bg-slate-300 text-slate-500';
       default: return 'bg-slate-300 text-slate-500';
@@ -21,7 +21,7 @@ export default function ProductTable({ products, onAddProductClick, onSearch, on
 
   return (
     <div className="w-full">
-      
+
       {/* Top Header Section */}
       <div className="flex justify-between items-center mb-8">
         <div>
@@ -33,15 +33,15 @@ export default function ProductTable({ products, onAddProductClick, onSearch, on
           <h1 className="text-4xl font-bold text-slate-800 tracking-tight">Gestión de Productos</h1>
           <p className="text-slate-500 mt-2 font-medium">Control centralizado en productos para la cadena logística.</p>
         </div>
-        
+
         <div className="flex flex-col items-end gap-6">
           {/* Top nav icons fake bar */}
           <div className="flex items-center gap-4 text-slate-400 bg-white px-4 py-2 rounded-full shadow-sm">
             <div className="relative">
               <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-300" />
-              <input type="text" 
-                placeholder="Buscar productos..." 
-                className="pl-9 pr-4 py-1.5 bg-transparent border-none text-sm focus:outline-none focus:ring-0 w-48" 
+              <input type="text"
+                placeholder="Buscar productos..."
+                className="pl-9 pr-4 py-1.5 bg-transparent border-none text-sm focus:outline-none focus:ring-0 w-48"
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' && onSearch) {
                     onSearch(e.target.value);
@@ -54,7 +54,7 @@ export default function ProductTable({ products, onAddProductClick, onSearch, on
             <img src="https://ui-avatars.com/api/?name=Admin+QF&background=1a4d3a&color=fff" alt="Perfil" className="w-8 h-8 rounded-full ml-2 border-2 border-white shadow-sm" />
           </div>
 
-          <button 
+          <button
             onClick={onAddProductClick}
             className="bg-[#1a4d3a] hover:bg-[#143c2d] text-white font-bold py-3.5 px-6 rounded-full shadow-[0_4px_14px_0_rgba(26,77,58,0.3)] transition-all flex items-center gap-2"
           >
@@ -104,8 +104,8 @@ export default function ProductTable({ products, onAddProductClick, onSearch, on
                 <tr key={product.id || idx} className="hover:bg-slate-50/50 transition-colors group">
                   <td className="py-5 px-8 text-slate-500 font-medium">{product.nombre}</td>
                   <td className="py-5 px-8">
-                    <span className={`px-3 py-1.5 rounded-lg text-xs font-bold inline-block border border-black/5 ${getProductColors({productType: product.tipo?.nombre})} uppercase tracking-wider`}>
-                      {product.tipo?.nombre || 'SIN TIPO'}
+                    <span className={`px-3 py-1.5 rounded-lg text-xs font-bold inline-block border border-black/5 ${getProductColors({ productType: product.tipoProductos?.nombre })} uppercase tracking-wider`}>
+                      {product.tipoProductos?.nombre || 'SIN TIPO'}
                     </span>
                   </td>
                   <td className="py-5 px-8 text-slate-500 font-medium">
@@ -122,12 +122,12 @@ export default function ProductTable({ products, onAddProductClick, onSearch, on
                   <td className="py-5 px-8 text-right">
                     <div className="flex justify-end gap-2 text-slate-400">
                       <button className="p-2 hover:text-[#1a4d3a] hover:bg-[#e6f5ef] rounded-[10px] transition-all"><UserPlus className="w-5 h-5" /></button>
-                      <button onClick={() => onDeleteProduct && onDeleteProduct(product.id)} className="p-2 hover:text-red-600 hover:bg-red-50 rounded-[10px] transition-all"><Trash className="w-5 h-5" /></button>
+                      <button onClick={() => onDeleteProduct && onDeleteProduct(product.idproducto)} className="p-2 hover:text-red-600 hover:bg-red-50 rounded-[10px] transition-all"><Trash className="w-5 h-5" /></button>
                     </div>
                   </td>
                 </tr>
               ))}
-              
+
               {products.length === 0 && (
                 <tr>
                   <td colSpan="5" className="py-8 text-center text-slate-500 font-medium">No se encontraron productos.</td>
@@ -136,7 +136,7 @@ export default function ProductTable({ products, onAddProductClick, onSearch, on
             </tbody>
           </table>
         </div>
-        
+
         {/* Pagination Footer */}
         <div className="bg-slate-50/50 border-t border-slate-100 py-4 px-8 flex justify-between items-center text-sm font-medium text-slate-500">
           <p>Mostrando {products.length} productos operativos</p>
