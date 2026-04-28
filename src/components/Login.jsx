@@ -31,8 +31,14 @@ export default function Login() {
         // Save user data in localStorage
         localStorage.setItem('qf_user_session', JSON.stringify(userData));
 
-        // Redirect to gestion-productos
-        navigate('/gestion-usuarios');
+        // Redirect based on role
+        if (role === 'OPERADOR') {
+          navigate('/panel-operador');
+        } else if (role === 'JEFE_LOGISTICA') {
+          navigate('/panel-jefe-logistica');
+        } else {
+          navigate('/gestion-usuarios');
+        }
       } else {
         // Attempt to parse any error payload from backend, otherwise use generic message
         setErrorMsg('Acceso denegado. Verifique sus credenciales de Corporación QF');
