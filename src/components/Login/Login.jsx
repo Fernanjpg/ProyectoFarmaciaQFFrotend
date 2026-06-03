@@ -59,17 +59,19 @@ export default function Login() {
 
   return (
 
-    <div className="min-h-screen bg-[radial-gradient(ellipse_at_center,var(--tw-gradient-stops))] from-green to-[#18d39e] flex items-center justify-center p-4 sm:p-8 font-sans">
+    <div className="min-h-screen bg-[radial-gradient(ellipse_at_center,var(--tw-gradient-stops))] from-blue to-[rgb(29, 24, 126)] flex items-center justify-center p-4 sm:p-8 font-sans">
 
-      <div className="max-w-[1000px] w-full bg-brown rounded-[40px] shadow-2xl flex flex-col md:flex-row overflow-hidden min-h-[600px] lg:min-h-[650px]">
+      <div className="max-w-[1000px] w-full bg-[rgb(29, 24, 126)] rounded-[40px] shadow-2xl flex flex-col md:flex-row overflow-hidden min-h-[600px] lg:min-h-[650px]">
 
         {/* Left Column (Branding Panel) */}
-        <div className="hidden md:flex flex-col justify-between w-[40%] bg-[rgb(24,126,63)] p-10 lg:p-14 relative overflow-hidden">
+        <div className="hidden md:flex flex-col justify-between w-[40%] bg-[rgb(29, 24, 126)] p-10 lg:p-14 relative overflow-hidden">
 
           {/* Background image overlay */}
           <div
-            className="absolute inset-0 opacity-10 mix-blend-overlay bg-cover bg-center pointer-events-none"
-            style={{ backgroundImage: "url('https://images.unsplash.com/photo-1587293852726-70cdb56c2866?q=80&w=1000')" }}
+            className="absolute inset-0 opacity-10 mix-blend-overlay bg-cover bg-center"
+            style={{ 
+              backgroundImage: "url('https://images.unsplash.com/photo-1587293852726-70cdb56c2866?q=80&w=1000')"
+            }}
           />
 
           {/* Subtle gradients */}
@@ -203,12 +205,11 @@ export default function Login() {
                 </>
               ) : (
                 <>
-                  INICIAR SESIÓN
+                  INGRESAR
                   <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1.5 transition-transform bg" />
                 </>
               )}
             </button>
-
           </form>
         </div>
       </div>

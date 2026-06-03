@@ -113,9 +113,9 @@ export default function UserTable({ users, onAddUserClick, onDeleteUser }) {
                     </div>
                   </td>
                   <td className="py-5 px-8">
-                    <span className={`px-3 py-1.5 rounded-lg text-xs font-bold inline-block border border-black/5 ${getRoleColors(user.roles?.nombre)} uppercase tracking-wider`}>
-                      {user.roles?.nombre || 'SIN ROL'}
-                    </span>
+                    <span className={`px-3 py-1.5 rounded-lg text-xs font-bold inline-block border border-black/5 ${getRoleColors(user.nombreRol)} uppercase tracking-wider`}>
+                          {user.nombreRol || 'SIN ROL'}
+                     </span>
                   </td>
                   <td className="py-5 px-8 text-slate-500 font-medium">{user.email}</td>
                   <td className="py-5 px-8">

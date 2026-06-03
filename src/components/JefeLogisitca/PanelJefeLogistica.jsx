@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
-  Users, UserPlus, Package, Box, LogOut, Download,
-  ClipboardList, User, LayoutDashboard, Home,
-  ShieldCheck
+  Download, ClipboardList, Box, ShieldCheck
 } from 'lucide-react';
+import Sidebar from '../Layout/Sidebar';
 
 const PanelJefeLogistica = () => {
   const navigate = useNavigate();
@@ -61,78 +60,17 @@ const PanelJefeLogistica = () => {
     navigate('/');
   };
 
-  const SidebarItem = ({ icon: Icon, label, active, onClick }) => (
-    <button
-      onClick={onClick}
-      className={`w-full flex items-center gap-4 px-6 py-4 rounded-full transition-all duration-300 font-semibold text-sm mb-2 ${active
-        ? 'bg-white text-[#1a4d3a] shadow-sm ring-1 ring-slate-200/50'
-        : 'text-slate-600 hover:bg-white/50 hover:text-[#1a4d3a]'
-        }`}
-    >
-      <Icon className={`w-5 h-5 ${active ? 'text-[#1a4d3a]' : 'text-slate-500'}`} />
-      {label}
-    </button>
-  );
-
   return (
     <div className="flex h-screen bg-[#f8fafc] overflow-hidden font-sans">
-      {/* Sidebar */}
-      <aside className="w-72 bg-[#f4fbf8] text-slate-700 flex flex-col h-full border-r border-[#d1ebe0] z-20 shrink-0">
-        <div className="p-8 pb-4">
-          <h1 className="text-[28px] font-black text-[#1a4d3a] leading-tight tracking-tight">
-            Corporación QF
-          </h1>
-          <p className="text-[10px] tracking-widest font-bold text-slate-400 uppercase mt-1">
-            LOGÍSTICA FARMACÉUTICA
-          </p>
-        </div>
+      <Sidebar 
+        activeSidebar={activeSidebar} 
+        onNavigate={(id) => setActiveSidebar(id)} 
+        onLogout={handleLogout}
+        user={user}
+      />
 
-        <nav className="flex-1 px-4 mt-8">
-          <SidebarItem 
-            icon={Box} 
-            label="Stock" 
-            active={activeSidebar === 'Stock'} 
-            onClick={() => setActiveSidebar('Stock')} 
-          />
-          <SidebarItem 
-            icon={ClipboardList} 
-            label="Reportes" 
-            active={activeSidebar === 'Reportes'} 
-            onClick={() => setActiveSidebar('Reportes')} 
-          />
-          <SidebarItem 
-            icon={ShieldCheck} 
-            label="Calidad" 
-            active={activeSidebar === 'Calidad'} 
-            onClick={() => setActiveSidebar('Calidad')} 
-          />
-        </nav>
-
-        <div className="p-6 mt-auto space-y-6">
-          <div className="bg-white p-4 rounded-full flex items-center gap-3 border border-slate-200/50 shadow-sm">
-            <div className="w-10 h-10 bg-[#1a4d3a] text-white rounded-full flex items-center justify-center shadow-inner shrink-0">
-              <User className="w-5 h-5" />
-            </div>
-            <div className="text-left flex-1 overflow-hidden">
-              <p className="text-sm font-bold text-slate-800 truncate">{user?.username || 'Admin QF'}</p>
-              <p className="text-[10px] font-medium text-slate-500">Corporación QF</p>
-            </div>
-          </div>
-
-          <button
-            onClick={handleLogout}
-            className="w-full flex items-center gap-4 px-6 py-2 transition-all font-bold text-sm text-red-600 hover:text-red-700 group"
-          >
-            <LogOut className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
-            Cerrar Sesión
-          </button>
-        </div>
-      </aside>
-
-      {/* Main Content */}
       <main className="flex-1 overflow-y-auto bg-white">
         <div className="max-w-7xl mx-auto p-8">
-          {/* Header */}
           <header className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10 bg-slate-50/50 p-8 rounded-[40px] border border-slate-100 shadow-sm relative overflow-hidden group">
             <div className="absolute top-0 right-0 w-64 h-64 bg-green-100/30 rounded-full -mr-32 -mt-32 blur-3xl group-hover:bg-green-200/40 transition-colors duration-700"></div>
 
@@ -156,9 +94,7 @@ const PanelJefeLogistica = () => {
             </div>
           </header>
 
-          {/* Reports Section */}
           <section className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
-            {/* Header section depending on active sidebar */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
               <div className="flex items-center gap-4">
                 <div className="w-12 h-12 bg-green-50 rounded-2xl flex items-center justify-center border border-green-100">
@@ -168,14 +104,14 @@ const PanelJefeLogistica = () => {
                 </div>
                 <div>
                   <h2 className="text-2xl font-bold text-slate-800 tracking-tight">
-                    {activeSidebar === 'Stock' ? 'Control de Stock' : 
-                     activeSidebar === 'Calidad' ? 'Control de Calidad' : 
-                     'Análisis de Reportes'}
+                    {activeSidebar === 'Stock' ? 'Control de Stock' :
+                      activeSidebar === 'Calidad' ? 'Control de Calidad' :
+                        'Análisis de Reportes'}
                   </h2>
                   <p className="text-slate-400 text-sm font-medium">
-                    {activeSidebar === 'Stock' ? 'Revisión de inventario y niveles críticos' : 
-                     activeSidebar === 'Calidad' ? 'Inspecciones y validación de estándares' : 
-                     'Métricas periódicas semanales, mensuales y anuales'}
+                    {activeSidebar === 'Stock' ? 'Revisión de inventario y niveles críticos' :
+                      activeSidebar === 'Calidad' ? 'Inspecciones y validación de estándares' :
+                        'Métricas periódicas semanales, mensuales y anuales'}
                   </p>
                 </div>
               </div>
@@ -185,7 +121,6 @@ const PanelJefeLogistica = () => {
               </button>
             </div>
 
-            {/* Tabs (only for Reportes) */}
             {activeSidebar === 'Reportes' && (
               <div className="bg-slate-50/80 p-2 rounded-[24px] inline-flex flex-wrap gap-1.5 border border-slate-100 backdrop-blur-sm">
                 {['Semanal', 'Mensual', 'Anual'].map((tab) => (
@@ -203,7 +138,6 @@ const PanelJefeLogistica = () => {
               </div>
             )}
 
-            {/* Table Container */}
             <div className="bg-white rounded-[40px] border border-slate-100 overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.02)]">
               <div className="overflow-x-auto">
                 <table className="w-full text-left border-collapse">
@@ -216,29 +150,29 @@ const PanelJefeLogistica = () => {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-50">
-                    {(activeSidebar === 'Stock' ? mockData['Stock'] : 
-                      activeSidebar === 'Calidad' ? mockData['Calidad'] : 
-                      mockData[activeTab]).map((row, idx) => (
-                      <tr key={idx} className="group hover:bg-slate-50/50 transition-colors duration-200 even:bg-slate-50/20">
-                        <td className="px-8 py-6">
-                          <span className="text-sm font-black text-slate-700 bg-slate-100 px-3 py-1 rounded-lg">#{row.id}</span>
-                        </td>
-                        <td className="px-8 py-6 text-sm text-slate-500 font-bold">{row.fecha}</td>
-                        <td className="px-8 py-6">
-                          <p className="text-sm text-slate-800 font-bold group-hover:text-[#499D81] transition-colors">{row.actividad}</p>
-                        </td>
-                        <td className="px-8 py-6 text-center">
-                          <span className={`inline-flex px-4 py-2 rounded-full text-[9px] font-black uppercase tracking-[0.1em] ${row.estado === 'Completado' || row.estado === 'Finalizado'
-                            ? 'bg-green-50 text-green-600 ring-1 ring-green-100'
-                            : row.estado === 'En proceso'
-                              ? 'bg-amber-50 text-amber-600 ring-1 ring-amber-100'
-                              : 'bg-slate-50 text-slate-500 ring-1 ring-slate-100'
-                            }`}>
-                            {row.estado}
-                          </span>
-                        </td>
-                      </tr>
-                    ))}
+                    {(activeSidebar === 'Stock' ? mockData['Stock'] :
+                      activeSidebar === 'Calidad' ? mockData['Calidad'] :
+                        mockData[activeTab]).map((row, idx) => (
+                          <tr key={idx} className="group hover:bg-slate-50/50 transition-colors duration-200 even:bg-slate-50/20">
+                            <td className="px-8 py-6">
+                              <span className="text-sm font-black text-slate-700 bg-slate-100 px-3 py-1 rounded-lg">#{row.id}</span>
+                            </td>
+                            <td className="px-8 py-6 text-sm text-slate-500 font-bold">{row.fecha}</td>
+                            <td className="px-8 py-6">
+                              <p className="text-sm text-slate-800 font-bold group-hover:text-[#499D81] transition-colors">{row.actividad}</p>
+                            </td>
+                            <td className="px-8 py-6 text-center">
+                              <span className={`inline-flex px-4 py-2 rounded-full text-[9px] font-black uppercase tracking-[0.1em] ${row.estado === 'Completado' || row.estado === 'Finalizado'
+                                ? 'bg-green-50 text-green-600 ring-1 ring-green-100'
+                                : row.estado === 'En proceso'
+                                  ? 'bg-amber-50 text-amber-600 ring-1 ring-amber-100'
+                                  : 'bg-slate-50 text-slate-500 ring-1 ring-slate-100'
+                                }`}>
+                                {row.estado}
+                              </span>
+                            </td>
+                          </tr>
+                        ))}
                   </tbody>
                 </table>
               </div>

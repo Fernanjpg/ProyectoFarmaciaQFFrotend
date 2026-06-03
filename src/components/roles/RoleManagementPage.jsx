@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
-import Layout from './Layout';
+import Layout from '../Layout/Layout';
 import RoleTable from './RoleTable';
 import RoleRegistrationForm from './RoleRegistrationForm';
 
